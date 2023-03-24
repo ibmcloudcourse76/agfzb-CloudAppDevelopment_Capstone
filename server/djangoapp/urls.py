@@ -10,6 +10,8 @@ urlpatterns = [
     # name the URL
 
     # path for about view
+    #path('course/<int:course_id>/', views.course_details, name='course_details'),
+    path(route='about', view=views.about, name='about'),
 
     # path for contact us view
 
