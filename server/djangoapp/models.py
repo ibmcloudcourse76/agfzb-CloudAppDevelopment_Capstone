@@ -1,45 +1,42 @@
 from django.db import models
 from django.utils.timezone import now
-
-
-# Create your models here.
+from django.core import serializers
+import uuid
+import json
 
 class CarMake(models.Model):
-    name = models.CharField(null=False, max_length=30, default='Make')
-    description = models.CharField(max_length=200, default='Description')
-    
+    name = models.CharField(null=False, max_length=100, default='Make')
+    description = models.CharField(max_length=500)
+
     def __str__(self):
-        return "Name: " + self.name + ", " + \
-               "Description: " + self.description
+        return "Name: " + self.name
 
 class CarModel(models.Model):
-    make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
     id = models.IntegerField(default=1,primary_key=True)
-    name = models.CharField(null=False, max_length=30, default='Car')
-
+    name = models.CharField(null=False, max_length=100, default='Car')
+   
     SEDAN = 'Sedan'
     SUV = 'SUV'
     WAGON = 'Wagon'
+    MINIVAN = 'Minivan'
     CAR_TYPES = [
         (SEDAN, 'Sedan'),
         (SUV, 'SUV'),
-        (WAGON, 'Wagon')
+        (WAGON, 'Wagon'),
+        (MINIVAN, 'Minivan')
     ]
+
     type = models.CharField(
         null=False,
         max_length=50,
         choices=CAR_TYPES,
         default=SEDAN
     )
-
+    make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
     year = models.DateField(default=now)
 
     def __str__(self):
-        return "Dealer ID: " + self.id + ", " + \
-               "Name: " + self.name + ", " + \
-               "Type: " + self.type + ", " + \
-               "Year: " + str(self.year)
-
+        return "Name: " + self.name    
 
 class CarDealer:
     def __init__(self, address, city, full_name, id, lat, long, st, zip, short_name):
